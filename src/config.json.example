@@ -1,0 +1,5 @@
+{
+    "databases": {
+        "sql_string" : "postgresql://postgres:criptopass24@postgresserver/gestor_equipos"
+    }
+}
