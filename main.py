@@ -2,8 +2,8 @@ from fastapi import FastAPI, Request, Response
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import router as kani_router
-from exceptions import ErrorHandler
+from src.routers import router as kani_router
+from src.exceptions import ErrorHandler
 from src.database import SessionLocal, engine
 from src import models
 
