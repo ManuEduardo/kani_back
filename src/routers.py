@@ -4,8 +4,8 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 from .database import SessionLocal
 
-from .schemas import Player, TeamPlayers, NewPlayer
-from .services import player_services, team_services
+from .schemas import Gabba, UserKani, NewUserKani, Improve, UserImprove, Interests, UserInterests, Diario, Note, Emotions, UserEmotions
+from .services import userkani_services, diary_services
 
 router = APIRouter(
     prefix='/api',
@@ -20,33 +20,25 @@ def get_db():
     finally:
         db.close()
 
-@router.get('/player/{player_id}', response_model=Player)
-def get_player(player_id: int, db: SessionLocal = Depends(get_db)):
-    db_player = player_services.get_player(db, player_id)
-    if db_player is None:
-        raise HTTPException(status_code=404, detail="Player not found")
-    return db_player
+@router.post('/usuarios/', response_model=NewUserKani)
+def crear_usuario(nuevo_usuario: NewUserKani, db: Session = Depends(get_db)):
+    db_user = userkani_services.create_user_kani(db, nuevo_usuario)
+    return db_user
 
 
-@router.post('/player/', response_model=Player)
-def post_player(new_player: NewPlayer, db: Session = Depends(get_db)):
-    db_player = player_services.post_player(db, new_player)
-    if db_player is None:
-        raise HTTPException(status_code=404, detail="Players not found")
-    return db_player
+@router.post('/diario/', response_model=Diario)
+def crear_elemento_diario(nuevo_diario: Diario, db: Session = Depends(get_db)):
+    user_id = nuevo_diario.user_id
+    diary_text = nuevo_diario.diary_text
+    note_title = nuevo_diario.note_title
+    note_text = nuevo_diario.note_text
 
+    diario_entry, note = diary_services.create_diary_entry(db, user_id, diary_text, note_title, note_text)
+    return diario_entry, note
 
-@router.get('/players/tshirt/{player_tshirt}', response_model=list[Player])
-def get_players_tshirt(player_tshirt: int, db: Session = Depends(get_db)):
-    db_players = player_services.get_players_tshirt(db, player_tshirt)
-    if db_players is None:
-        raise HTTPException(status_code=406, detail="Players no accepted")
-    return db_players
-
-
-@router.get('/team/{team_id}', response_model=TeamPlayers)
-def get_team_players(team_id: int, db: Session = Depends(get_db)):
-    db_team_players = team_services.get_team_players(db, team_id)
-    if db_team_players is None:
-        raise HTTPException(status_code=404, detail="Players not found")
-    return db_team_players
+@router.get('/user/{user_id}', response_model=UserKani)
+def get_user_kani(user_id: int, db: Session = Depends(get_db)):
+    db_user = userkani_services.get_user_kani(db, user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user

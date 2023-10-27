@@ -1,5 +1,5 @@
 {
     "databases": {
-        "sql_string" : "postgresql://postgres:criptopass24@postgresserver/gestor_equipos"
+        "sql_string": "postgresql://postgre:kanidb2023@kani.postgres.database.azure.com:5432/postgres"
     }
 }
