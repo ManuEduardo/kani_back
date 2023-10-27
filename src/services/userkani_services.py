@@ -4,19 +4,18 @@ from src import models, schemas
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
 
-
 def get_user_kani(db: Session, user_id: int):
     return db.query(models.UserKani).filter(models.UserKani.id == user_id).first()
-
 
 def create_user_kani(db: Session, new_user: schemas.NewUserKani):
     try:
         current_time = datetime.utcnow()
         db_user_kani = models.UserKani(
-            name=new_user.name,
-            phone_number=new_user.phone_number,
-            password_hash= "",
-            create_date=current_time
+            name = new_user.name,
+            phone_number = new_user.phone_number,
+            password_hash = "",
+            create_date = current_time,
+            gabba_id = 1
         )
         db.add(db_user_kani)
         db.commit()
