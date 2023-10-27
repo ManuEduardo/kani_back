@@ -45,4 +45,4 @@ def create_diary_entry(
         return new_diary_entry, new_note
 
 def get_notas_usuario(db: Session, user_id: int):
-    return db.query(models.Note).filter(models.Diary.user_id == user_id).all()
+    return db.query(models.Note).join(models.Diary).filter(models.Diary.user_id == user_id).all()

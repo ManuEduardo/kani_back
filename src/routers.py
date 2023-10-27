@@ -3,6 +3,7 @@ from fastapi import HTTPException
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from .database import SessionLocal
+from typing import List
 
 from .schemas import Gabba, UserKani,NewDiaryNote, NewUserKani, Improve, UserImprove, Interests, UserInterests, Diary, Note, Emotions, UserEmotions
 from .services import userkani_services, diary_services
@@ -30,7 +31,7 @@ def crear_elemento_diario(nuevo_diario: NewDiaryNote, db: Session = Depends(get_
     diary, newNote = diary_services.create_diary_entry(db, nuevo_diario)
     return nuevo_diario
 
-@router.get('/diario/{user_id}', response_model= list[Note])
+@router.get('/diario/{user_id}', response_model= List[Note])
 def get_notas_usuario(user_id: int, db: Session = Depends(get_db)):
     db_Notes = diary_services.get_notas_usuario(db, user_id)
     return db_Notes
