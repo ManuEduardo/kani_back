@@ -30,6 +30,12 @@ def crear_elemento_diario(nuevo_diario: NewDiaryNote, db: Session = Depends(get_
     diary, newNote = diary_services.create_diary_entry(db, nuevo_diario)
     return nuevo_diario
 
+@router.get('/diario/{user_id}', response_model= list[Note])
+def get_notas_usuario(user_id: int, db: Session = Depends(get_db)):
+    db_Notes = diary_services.get_notas_usuario(db, user_id)
+    return db_Notes
+
+
 @router.get('/user/{user_id}', response_model=UserKani)
 def get_user_kani(user_id: int, db: Session = Depends(get_db)):
     db_user = userkani_services.get_user_kani(db, user_id)
