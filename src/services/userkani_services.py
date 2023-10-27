@@ -29,3 +29,17 @@ def create_user_kani(db: Session, new_user: schemas.NewUserKani):
 
 def get_users_by_phone_number(db: Session, phone_number: str):
     return db.query(models.UserKani).filter(models.UserKani.phone_number == phone_number).all()
+
+def get_days_used(db: Session, id_user: int):
+    user = db.query(models.UserKani).filter(models.UserKani.id == id_user).first()
+    if user:
+        create_date = user.create_date
+        current_date = datetime.now().date()
+        
+        # Asegúrate de que ambas fechas sean de tipo datetime.date
+        create_date = create_date.date()  # Convierte a datetime.date
+        
+        days_used = (current_date - create_date).days
+        return days_used 
+    else:
+        return None

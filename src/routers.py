@@ -43,3 +43,8 @@ def get_user_kani(user_id: int, db: Session = Depends(get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
+
+@router.get('/userDate/{user_id}', response_model=int)
+def get_user_kani(user_id: int, db: Session = Depends(get_db)):
+    db_userDay = userkani_services.get_days_used(db, user_id)
+    return db_userDay
