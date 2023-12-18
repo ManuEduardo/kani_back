@@ -24,7 +24,7 @@ class UserKani(ItemBase):
 
 class NewUserKani(ItemBase):
     name: str
-    phone_number: str
+    password_hash: str
 
 class NewDiaryNote(ItemBase):
     user_id: int
@@ -65,6 +65,7 @@ class Note(ItemBase):
     title: str
     text: str
     diary_id: int
+    date: datetime
     class Config:
         orm_mode = True
 

@@ -69,6 +69,7 @@ class Note(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String)
     text = Column(String)
+    date = Column(DateTime)
     diary_id = Column(Integer, ForeignKey('diary.id'))
     
     diary = relationship("Diary", back_populates="notes")
