@@ -26,7 +26,16 @@ def create_diary_entry(
         db.add(new_note)
         db.commit()
         db.refresh(new_note)
-        return existing_diary, new_note
+
+        new = schemas.NewDiaryNoteResponse(
+            id=new_note.id,
+            user_id=user_id,
+            note_title=note_title,
+            note_text=note_text,
+            date=current_datetime
+        )
+
+        return new
     else:
         # Si no existe un diario, crear uno y luego una nueva nota
         new_diary_entry = models.Diary(
@@ -46,7 +55,15 @@ def create_diary_entry(
         db.commit()
         db.refresh(new_note)
 
-        return new_diary_entry, new_note
+        new = schemas.NewDiaryNoteResponse(
+            id=new_note.id,
+            user_id=user_id,
+            note_title=note_title,
+            note_text=note_text,
+            date=current_datetime
+        )
+
+        return new
 
 def get_notas_usuario(db: Session, user_id: int):
     return db.query(models.Note).join(models.Diary).filter(models.Diary.user_id == user_id).all()

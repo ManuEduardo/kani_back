@@ -31,6 +31,12 @@ class NewDiaryNote(ItemBase):
     note_title: str
     note_text: str
 
+class NewDiaryNoteResponse(ItemBase):
+    user_id: int
+    note_title: str
+    note_text: str
+    date: datetime
+
 class Improve(ItemBase):
     improvement: str
 

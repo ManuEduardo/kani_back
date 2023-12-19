@@ -7,7 +7,6 @@ from src.exceptions import ErrorHandler
 from src.database import SessionLocal, engine
 from src import models
 
-
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()

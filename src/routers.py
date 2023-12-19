@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from .database import SessionLocal
 from typing import List
 
-from .schemas import Gabba, UserKani,NewDiaryNote, NewUserKani, Improve, UserImprove, Interests, UserInterests, Diary, Note, Emotions, UserEmotions
+from .schemas import NewDiaryNoteResponse, UserKani,NewDiaryNote, NewUserKani, Improve, UserImprove, Interests, UserInterests, Diary, Note, Emotions, UserEmotions
 from .services import userkani_services, diary_services
 
 router = APIRouter(
@@ -26,10 +26,10 @@ def crear_usuario(nuevo_usuario: NewUserKani, db: Session = Depends(get_db)):
     db_user = userkani_services.create_user_kani(db, nuevo_usuario)
     return db_user
 
-@router.post('/diario/', response_model= NewDiaryNote)
+@router.post('/diario/', response_model= NewDiaryNoteResponse)
 def crear_elemento_diario(nuevo_diario: NewDiaryNote, db: Session = Depends(get_db)):
-    diary, newNote = diary_services.create_diary_entry(db, nuevo_diario)
-    return nuevo_diario
+    NewDiary = diary_services.create_diary_entry(db, nuevo_diario)
+    return NewDiary
 
 @router.get('/diario/{user_id}', response_model= List[Note])
 def get_notas_usuario(user_id: int, db: Session = Depends(get_db)):
