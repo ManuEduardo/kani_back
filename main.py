@@ -1,11 +1,12 @@
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request, Response, Depends
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
+from typing import Annotated
 
 from src.routers import router as kani_router
 from src.exceptions import ErrorHandler
 from src.database import SessionLocal, engine
-from src import models
+from src import models, auth
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -32,6 +33,7 @@ app.add_middleware(
     **options_middleware
 )
 
+app.include_router(auth.router)
 app.include_router(kani_router)
 
 @app.get("/",include_in_schema=False)

@@ -4,16 +4,31 @@ from src import models, schemas
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
 import bcrypt
+from jose import jwt, JWTError
+from passlib.context import CryptContext
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 
+SECRET_KEY = 'asdasdasdasfasfoeiro12oi312i73u128o3j1o231238u2319od23jo2'
+ALGORITHM = 'HS256'
+
+bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 def get_user_kani(db: Session, user_id: int):
     return db.query(models.UserKani).filter(models.UserKani.id == user_id).first()
+
+def authenticate_user(username: str, password: str, db):
+    user = db.query(models.UserKani).filter(models.UserKani.name == username).first()
+    if not user:
+        return False
+    if not bcrypt_context.verify(password, user.password_hash):
+        return False
+    return user
 
 def create_user_kani(db: Session, new_user: schemas.NewUserKani):
     try:
 
         # Genera un hash seguro de la contraseña
-        hashed_password = bcrypt.hashpw(new_user.password_hash.encode('utf-8'), bcrypt.gensalt())
+        hashed_password = bcrypt_context.hash(new_user.password_hash)
 
         current_time = datetime.utcnow()
         db_user_kani = models.UserKani(
